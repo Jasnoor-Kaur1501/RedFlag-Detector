@@ -696,4 +696,113 @@ const RED_FLAGS = [
     severity: "high", emoji: "🚩"
   }
 ];
+const GREEN_FLAGS = [
+  { patterns: [/i('m| am) sorry/i, /i apologise/i, /i was wrong/i], text: "Genuine apologies without deflection — this is rare and worth noting." },
+  { patterns: [/i respect (your|that)/i, /i understand/i, /that makes sense/i], text: "Demonstrating understanding without making it about themselves." },
+  { patterns: [/how (are|were) you/i, /how (do|did) you feel/i, /what do you (need|want)/i], text: "Asking about your feelings and needs — active emotional investment." },
+  { patterns: [/i was thinking about (you|us)/i, /i wanted to check in/i], text: "Proactive care and consideration — they're thinking about you when you're not around." },
+  { patterns: [/take (your time|as long as you need)/i, /no pressure/i, /whenever you('re| are) ready/i], text: "Respecting pace and boundaries without making you feel guilty for having them." },
+];
+
+const VERDICTS = [
+  { min: 0,  max: 0,   headline: "SURPRISINGLY FINE ACTUALLY", sub: "No significant red flags detected in this text. Either this is a healthy dynamic, or they're very good at hiding it. Stay alert.", color: "#4caf50", score: 5 },
+  { min: 1,  max: 1,   headline: "YELLOW ALERT: PROCEED WITH EYES OPEN", sub: "One flag found. Could be a one-off, could be a pattern forming. Keep notes.", color: "#ff9800", score: 28 },
+  { min: 2,  max: 3,   headline: "THIS IS GIVING CONCERN", sub: "Multiple red flags detected. This pattern is worth addressing directly and soon.", color: "#ff5722", score: 55 },
+  { min: 4,  max: 6,   headline: "SIGNIFICANT RED FLAG ENERGY DETECTED", sub: "Several flags, some high severity. This situation deserves serious reconsideration.", color: "#e91e63", score: 76 },
+  { min: 7,  max: 999, headline: "EVACUATE. THIS IS NOT A DRILL.", sub: "This text is a red flag warehouse. We're genuinely concerned. Please call your most honest friend.", color: "#d32f2f", score: 98 },
+];
+
+let lastResult = null;
+
+document.getElementById("inputText").addEventListener("input", function() {
+  document.getElementById("charCount").textContent = this.value.length;
+});
+
+function analyze() {
+  const text = document.getElementById("inputText").value.trim();
+  if (!text || text.length < 10) {
+    showToast("paste something first bestie");
+    return;
+  }
+
+  const foundFlags = [];
+  const foundGreen = [];
+
+  RED_FLAGS.forEach(flag => {
+    for (const pattern of flag.patterns) {
+      if (pattern.test(text)) {
+        const match = text.match(pattern);
+        const quote = match ? getContext(text, match.index, match[0].length) : null;
+        foundFlags.push({ ...flag, quote });
+        break;
+      }
+    }
+  });
+
+  GREEN_FLAGS.forEach(flag => {
+    for (const pattern of flag.patterns) {
+      if (pattern.test(text)) {
+        foundGreen.push(flag);
+        break;
+      }
+    }
+  });
+
+  const verdict = VERDICTS.find(v => foundFlags.length >= v.min && foundFlags.length <= v.max) || VERDICTS[0];
+  lastResult = { flags: foundFlags, green: foundGreen, verdict, text };
+
+  renderResults(foundFlags, foundGreen, verdict);
+}
+
+function getContext(text, idx, len) {
+  const start = Math.max(0, idx - 30);
+  const end = Math.min(text.length, idx + len + 30);
+  let snippet = text.slice(start, end).trim();
+  if (start > 0) snippet = "…" + snippet;
+  if (end < text.length) snippet = snippet + "…";
+  return snippet;
+}
+
+function renderResults(flags, green, verdict) {
+  const banner = document.getElementById("verdictBanner");
+  banner.style.background = verdict.color + "18";
+  banner.style.borderColor = verdict.color;
+
+  document.getElementById("verdictHeadline").textContent = verdict.headline;
+  document.getElementById("verdictHeadline").style.color = verdict.color;
+  document.getElementById("verdictSub").textContent = verdict.sub;
+  document.getElementById("scoreNum").textContent = verdict.score;
+  document.getElementById("scoreNum").style.color = verdict.color;
+
+  setTimeout(() => {
+    document.getElementById("dangerBar").style.width = verdict.score + "%";
+    document.getElementById("dangerBar").style.background = verdict.color;
+  }, 300);
+
+  const flagsSection = document.getElementById("flagsSection");
+  if (flags.length === 0) {
+    flagsSection.innerHTML = `
+      <div class="clean-bill">
+        <div class="cb-icon">🟢</div>
+        <div class="cb-headline">NO RED FLAGS FOUND</div>
+        <div class="cb-sub">We looked. We really looked. This text does not contain any of our known red flag patterns. Take that as a good sign — cautiously.</div>
+      </div>`;
+  } else {
+    flagsSection.innerHTML = `
+      <div class="flags-header">
+        <div class="flags-title">🚩 RED FLAGS FOUND</div>
+        <div class="flags-count">${flags.length} flag${flags.length !== 1 ? "s" : ""} detected</div>
+      </div>
+      ${flags.map((f, i) => `
+        <div class="flag-card" style="animation-delay:${i * 0.08}s">
+          <div class="fc-flag-col">🚩</div>
+          <div class="fc-body">
+            ${f.quote ? `<div class="fc-quote">"${esc(f.quote)}"</div>` : ""}
+            <div class="fc-roast">${f.roast}</div>
+            <span class="fc-severity" style="background:${f.severity==='high'?'#ff2d55':f.severity==='medium'?'#ff9800':'#ffc107'};color:${f.severity==='high'?'#fff':'#0d0d0d'}">${f.severity} severity</span>
+          </div>
+        </div>
+      `).join("")}`;
+  }
+
 
