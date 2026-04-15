@@ -296,4 +296,101 @@ textarea::placeholder {
 .vb-verdict-text {
   flex: 1;
 }
+.vb-headline {
+  font-family: var(--anton);
+  font-size: clamp(24px, 4vw, 40px);
+  letter-spacing: 0px;
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+
+.vb-sub {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.vb-bar-wrap {
+  background: rgba(13,13,13,0.06);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.vb-bar-label {
+  font-family: var(--body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.vb-bar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(13,13,13,0.1);
+  border: 1px solid rgba(13,13,13,0.15);
+}
+
+.vb-bar-fill {
+  height: 100%;
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+
+/* FLAGS LIST */
+.flags-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.flags-title {
+  font-family: var(--anton);
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+.flags-count {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--hot);
+  letter-spacing: 0.06em;
+}
+
+.flag-card {
+  background: var(--white);
+  border: 2px solid var(--border);
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  animation: slideUp 0.35s ease backwards;
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fc-flag-col {
+  background: var(--hot);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.fc-body {
+  padding: 14px 18px;
+}
 
