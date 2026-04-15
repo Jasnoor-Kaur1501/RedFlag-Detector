@@ -606,3 +606,94 @@ textarea::placeholder {
       </div>
     </div>
 
+    <div id="flagsSection"></div>
+    <div id="greenSection"></div>
+
+    <div class="action-row">
+      <button class="act-btn" onclick="reset()">← analyse another</button>
+      <button class="act-btn act-btn-hot" onclick="copyReport()">copy full report</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const RED_FLAGS = [
+  {
+    patterns: [/my ex(es)? (was|were|is|are) (crazy|insane|psycho|toxic|obsessed|clingy)/i, /all my exes (are|were) crazy/i],
+    roast: "Statistically, if every single one of your exes is 'crazy,' the common denominator is you. This is a classic deflection technique and a significant warning sign.",
+    severity: "high", emoji: "🚩"
+  },
+  {
+    patterns: [/i('m| am) not like (other|most) (people|girls|guys)/i, /i('m| am) different from (everyone|most people)/i],
+    roast: "Declaring yourself different is what people do when they want you to stop questioning their behaviour before you've even started. Everyone says this. Ironically.",
+    severity: "medium", emoji: "🚩"
+  },
+  {
+    patterns: [/you('re| are) (too |over)?(sensitive|emotional|dramatic|much)/i, /stop (being|overreacting)/i, /you('re| are) overreacting/i],
+    roast: "Telling someone their feelings are wrong is a dismissal tactic. It's not feedback — it's a way to avoid accountability. Major flag.",
+    severity: "high", emoji: "🚩"
+  },
+  {
+    patterns: [/i hate drama/i, /i('m| am) not (about|into) (that|drama)/i, /drama (free|free life)/i],
+    roast: "People who loudly announce they hate drama tend to be the source of a significant portion of it. The disclaimer is the tell.",
+    severity: "medium", emoji: "🚩"
+  },
+  {
+    patterns: [/i('m| am) just (being |an? )?(honest|real|blunt|straightforward)/i, /i just say what i (think|feel)/i, /can't handle the truth/i],
+    roast: "'Brutal honesty' is often just brutality with plausible deniability. Genuine honesty doesn't need to announce itself.",
+    severity: "medium", emoji: "🚩"
+  },
+  {
+    patterns: [/i (was )?just (joking|kidding|playing)/i, /can('t| not) you take a joke/i, /it was (just )?a joke/i],
+    roast: "Using humour to say something harmful, then retreating to 'just joking' when called out — this is how people test boundaries and avoid consequences simultaneously.",
+    severity: "high", emoji: "🚩"
+  },
+  {
+    patterns: [/no one (understands|gets) me/i, /nobody (understands|gets) me/i, /i('m| am) (so )?misunderstood/i],
+    roast: "This is either a genuine cry for connection (valid, needs addressing) or a manipulation tactic to make you feel like the special one who finally 'gets' them. Context matters enormously.",
+    severity: "low", emoji: "🚩"
+  },
+  {
+    patterns: [/i don('t| not) do labels/i, /we don('t| not) need (a )?label/i, /why do we need to put a label/i],
+    roast: "Refusing labels while enjoying all the benefits of a relationship is having cake and not acknowledging the cake exists. Clarity costs nothing.",
+    severity: "high", emoji: "🚩"
+  },
+  {
+    patterns: [/i('m| am) not (ready|looking) for (anything )?(serious|a relationship|commitment)/i, /let('s| us) just see where (it|things) go/i],
+    roast: "This is fine when stated upfront. It's a major flag when said after significant time has passed and expectations have been established.",
+    severity: "medium", emoji: "🚩"
+  },
+  {
+    patterns: [/you('re| are) (so |too )?(lucky|lucky to have me)/i, /i('m| am) doing you a favour/i, /not everyone would (put up with|deal with) (you|this)/i],
+    roast: "Someone who wants you to feel lucky to be with them is manufacturing a power imbalance. Relationships don't work on gratitude debt.",
+    severity: "high", emoji: "🚩"
+  },
+  {
+    patterns: [/i('m| am) (just )?not (a |an )?emotional (person|type)/i, /i don('t| not) really do feelings/i, /i('m| am) not good (with|at) (feelings|emotions)/i],
+    roast: "Announcing emotional unavailability upfront doesn't make it acceptable — it's often used as a pre-emptive excuse for behaviour that will follow.",
+    severity: "medium", emoji: "🚩"
+  },
+  {
+    patterns: [/why (are|were) you (talking|speaking) to (him|her|them)/i, /who (were|are) you (with|talking to)/i, /you don('t| not) need (to talk to|friends like)/i],
+    roast: "Monitoring who you speak to and attempting to restrict your social circle is a classic early-stage control behaviour. This escalates.",
+    severity: "high", emoji: "🚩"
+  },
+  {
+    patterns: [/you (always|never) (do|say|are)/i, /you('re| are) always (like this|doing this)/i],
+    roast: "'Always' and 'never' in arguments are rarely accurate and usually designed to put you on the defensive. Watch for this pattern.",
+    severity: "low", emoji: "🚩"
+  },
+  {
+    patterns: [/i('m| am) (just )?an? (alpha|dominant|leader)/i, /i (wear|wore) the pants/i],
+    roast: "People who describe themselves as alphas in relationships usually mean they expect compliance without negotiation. Red flag wearing a costume.",
+    severity: "high", emoji: "🚩"
+  },
+  {
+    patterns: [/you (made|make) me (do|feel|act) (this|like this|this way)/i, /if you (hadn't|didn't|don't) .+ i wouldn't/i],
+    roast: "Externalising responsibility for one's own reactions onto another person is textbook blame-shifting. No one makes anyone do anything.",
+    severity: "high", emoji: "🚩"
+  }
+];
+
