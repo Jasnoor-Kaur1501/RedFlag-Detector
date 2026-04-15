@@ -496,4 +496,113 @@ textarea::placeholder {
   gap: 10px;
   margin-top: 24px;
 }
+.act-btn {
+  flex: 1;
+  font-family: var(--anton);
+  font-size: 13px;
+  letter-spacing: 1px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 2px solid var(--border);
+  background: var(--white);
+  color: var(--ink);
+}
+.act-btn:hover { background: var(--ink); color: var(--white); }
+
+.act-btn-hot {
+  background: var(--ink);
+  color: var(--white);
+}
+.act-btn-hot:hover { background: var(--hot); border-color: var(--hot); }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 12px 24px;
+  opacity: 0;
+  transition: all 0.25s;
+  pointer-events: none;
+  z-index: 100;
+  border: 2px solid var(--hot);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 600px) {
+  .logo-main { font-size: 24px; }
+  .header-right { display: none; }
+  .vb-top { flex-direction: column; gap: 12px; }
+  .vb-score-num { font-size: 56px; }
+  .flag-card { grid-template-columns: 44px 1fr; }
+  .main { padding: 28px 16px 48px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo-block">
+      <div class="logo-eyebrow">Breaking analysis</div>
+      <div class="logo-main">RED<em>FLAG</em> DETECTOR</div>
+    </div>
+    <div class="header-right">
+      <div class="h-tag">Paste · Analyse · Survive</div>
+      <div class="breaking-pill">🚨 LIVE</div>
+    </div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-inner">
+🚩 "i'm not like other people" &nbsp;·&nbsp; 🚩 "my ex was crazy" &nbsp;·&nbsp; 🚩 "i hate drama" (said dramatically) &nbsp;·&nbsp; 🚩 "you're too sensitive" &nbsp;·&nbsp; 🚩 "i was just joking" &nbsp;·&nbsp; 🚩 "no one understands me" &nbsp;·&nbsp; 🚩 "i don't do labels" &nbsp;·&nbsp; 🚩 "i'm just an honest person" &nbsp;·&nbsp; 🚩 "you're overreacting" &nbsp;·&nbsp; 🚩 "we should hang out sometime" (never follows up) &nbsp;·&nbsp; 🚩 "i'm not ready for anything serious" (3 months in) &nbsp;·&nbsp;
+  </div>
+  </div>
+</header>
+
+<div class="main">
+
+  <div class="section-hed">Submit evidence</div>
+
+  <div class="input-card">
+    <div class="input-card-header">
+      <div class="ich-label">PASTE THE MESSAGE / TEXT / SITUATION</div>
+      <div class="ich-hint">names redacted for your protection</div>
+    </div>
+    <textarea id="inputText" placeholder="paste a text, a situation, something they said, a whole paragraph of concerning behaviour... we don't judge. we just analyse." maxlength="2000"></textarea>
+    <div class="input-footer">
+      <div class="char-count"><span id="charCount">0</span> / 2000 characters</div>
+    </div>
+  </div>
+
+  <button class="analyze-btn" onclick="analyze()">
+    <span>🔍 DETECT RED FLAGS →</span>
+  </button>
+
+  <div class="results" id="results">
+
+    <div class="verdict-banner" id="verdictBanner">
+      <div class="vb-top">
+        <div class="vb-verdict-text">
+          <div class="vb-headline" id="verdictHeadline">—</div>
+          <div class="vb-sub" id="verdictSub">—</div>
+        </div>
+        <div class="vb-score-wrap">
+          <div class="vb-score-num" id="scoreNum">0</div>
+          <div class="vb-score-label">danger score</div>
+        </div>
+      </div>
+      <div class="vb-bar-wrap">
+        <div class="vb-bar-label">Threat level</div>
+        <div class="vb-bar-track">
+          <div class="vb-bar-fill" id="dangerBar"></div>
+        </div>
+      </div>
+    </div>
 
