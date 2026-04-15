@@ -1,1 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RedFlag Detector</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+  --pink: #ffd6e0;
+  --pink-deep: #ffb3c6;
+  --hot: #ff2d55;
+  --ink: #0d0d0d;
+  --white: #fffaf8;
+  --muted: #6b5b62;
+  --yellow: #fff176;
+  --border: #0d0d0d;
+  --anton: 'Anton', sans-serif;
+  --serif: 'Libre Baskerville', serif;
+  --body: 'Space Grotesk', sans-serif;
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--pink);
+  color: var(--ink);
+  font-family: var(--body);
+}
+
+/* HEADER */
+header {
+  background: var(--ink);
+  color: var(--pink);
+  padding: 0;
+  border-bottom: 4px solid var(--hot);
+}
+
+.header-top {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.logo-block {
+  padding: 16px 32px;
+  border-right: 2px solid rgba(255,214,224,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.logo-eyebrow {
+  font-family: var(--body);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--hot);
+}
+
+.logo-main {
+  font-family: var(--anton);
+  font-size: 32px;
+  letter-spacing: 1px;
+  color: var(--white);
+  line-height: 1;
+}
+
+.logo-main em {
+  color: var(--hot);
+  font-style: normal;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.h-tag {
+  font-family: var(--body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,214,224,0.4);
+  padding: 0 28px;
+  border-left: 2px solid rgba(255,214,224,0.1);
+}
+
+.breaking-pill {
+  background: var(--hot);
+  color: var(--white);
+  font-family: var(--anton);
+  font-size: 12px;
+  letter-spacing: 1px;
+  padding: 8px 20px;
+  margin: 12px 20px;
+  animation: flashPill 1.5s infinite;
+}
