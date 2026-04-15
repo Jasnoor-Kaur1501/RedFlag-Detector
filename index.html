@@ -804,5 +804,66 @@ function renderResults(flags, green, verdict) {
         </div>
       `).join("")}`;
   }
+  const greenSection = document.getElementById("greenSection");
+  if (green.length > 0) {
+    greenSection.innerHTML = `
+      <div class="green-section">
+        <div class="green-header">
+          <div class="green-title">🟢 GREEN FLAGS FOUND</div>
+        </div>
+        ${green.map((g, i) => `
+          <div class="green-card" style="animation-delay:${(flags.length + i) * 0.08}s">
+            <div class="gc-icon">✅</div>
+            <div class="gc-text">${g.text}</div>
+          </div>
+        `).join("")}
+      </div>`;
+  } else {
+    greenSection.innerHTML = "";
+  }
+
+  document.getElementById("results").classList.add("visible");
+  document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function reset() {
+  document.getElementById("results").classList.remove("visible");
+  document.getElementById("dangerBar").style.width = "0%";
+  document.getElementById("inputText").value = "";
+  document.getElementById("charCount").textContent = "0";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function copyReport() {
+  if (!lastResult) return;
+  const { flags, green, verdict } = lastResult;
+  let text = `🚩 RED FLAG DETECTOR REPORT\n\nVerdict: ${verdict.headline}\nDanger Score: ${verdict.score}/100\n\n`;
+  if (flags.length) {
+    text += `RED FLAGS (${flags.length}):\n`;
+    flags.forEach((f, i) => { text += `\n${i+1}. [${f.severity.toUpperCase()}] ${f.roast}\n`; });
+  } else {
+    text += "No red flags detected.\n";
+  }
+  if (green.length) {
+    text += `\nGREEN FLAGS (${green.length}):\n`;
+    green.forEach((g, i) => { text += `\n${i+1}. ${g.text}\n`; });
+  }
+  text += "\n\nAnalysed by RedFlag Detector";
+  navigator.clipboard.writeText(text).then(() => showToast("report copied — share wisely"));
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+function esc(str) {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+</script>
+</body>
+</html>
 
 
