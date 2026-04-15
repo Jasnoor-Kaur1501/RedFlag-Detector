@@ -36,3 +36,20 @@ Paste a message, a text, a situation, or something they said. Get a full red fla
 | "I'm an alpha" | High |
 | Blame-shifting language | High |
 
+## Design
+
+Anton display + Libre Baskerville serif + Space Grotesk body · Hot pink, tabloid black, red accents · Gossip magazine meets breaking news ticker. Completely different from Days 01–06.
+
+## Tech
+
+HTML · CSS · Vanilla JS · Regex pattern matching · No API · No data sent anywhere · GitHub Pages
+
+Everything runs locally. Nothing is stored or transmitted.
+
+## Run locally
+
+Download or clone → open `index.html` in any browser. Done.
+
+---
+
+*Part of #21DaysOfVibeCode — 21 projects, 21 days, all different.*
